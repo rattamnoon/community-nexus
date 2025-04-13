@@ -30,6 +30,48 @@ services:
       - community-nexus
     depends_on:
       - db
+  # api:
+  #   image: api:latest
+  #   restart: always
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/api/Dockerfile
+  #   ports:
+  #     - '4000:4000'
+  #   networks:
+  #     - community-nexus
+  #   volumes:
+  #     - ./apps/api/uploads:/app/uploads
+  #   environment:
+  #     - PORT=4000
+  #     - DB_HOST=db
+  #     - DB_PORT=3306
+  #     - DB_USER=user
+  #     - DB_PASSWORD=password
+  #     - DB_DATABASE=community-nexus
+  #     - JWT_SECRET=secret
+  #     - JWT_EXPIRATION_TIME=15m
+  #     - REDIS_URL=redis://cache:6379
+  #   depends_on:
+  #     - db
+  #     - cache
+  # web:
+  #   image: web:latest
+  #   restart: always
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/web/Dockerfile
+  #     args:
+  #       NEXT_PUBLIC_API_URL: http://localhost:4000
+  #   ports:
+  #     - '3000:3000'
+  #   environment:
+  #     - NEXTAUTH_URL=http://localhost:3000
+  #     - NEXTAUTH_SECRET=un-secure-secret
+  #   networks:
+  #     - community-nexus
+  #   depends_on:
+  #     - api
 
 networks:
   community-nexus:
