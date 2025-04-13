@@ -1,5 +1,5 @@
 {
-  "name": "my-turborepo",
+  "name": "community-nexus",
   "version": "0.0.0",
   "private": true,
   "description": "",
@@ -11,16 +11,32 @@
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "prepare": "husky",
+    "commit": "cz"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "commitizen": "^4.3.1",
+    "commitlint": "^19.8.0",
+    "commitlint-config-gitmoji": "^2.3.1",
+    "cz-customizable": "^7.4.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.1",
     "prettier": "^3.2.5",
     "turbo": "^2.5.0"
   },
-  "packageManager": "pnpm@8.15.5",
+  "packageManager": "pnpm@10.8.0",
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "./cz.config.cjs"
+    }
   }
 }
