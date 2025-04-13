@@ -1,20 +1,16 @@
 import { axiosInstance } from '@/utils/axiosInstance';
-import type { Metadata, ResolvingMetadata } from 'next';
+import type { Metadata } from 'next';
 
 type Props = {
-  params: { blogId: string };
+  params: Promise<{ blogId: string }>;
 };
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
-  // Fetch blog post data
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
-    const res = await axiosInstance.get(`/posts/${params.blogId}`);
+    const { blogId } = await params;
+    const res = await axiosInstance.get(`/posts/${blogId}`);
     const post = await res.data;
 
-    // Fallback values if the API call fails
     const title = post?.title || 'Blog Post';
 
     return {
