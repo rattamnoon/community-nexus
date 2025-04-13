@@ -8,7 +8,7 @@ import {
   paginate,
   Pagination,
 } from 'nestjs-typeorm-paginate';
-import { FindOptionsWhere, Like, Repository } from 'typeorm';
+import { FindManyOptions, FindOptionsWhere, Like, Repository } from 'typeorm';
 
 @Injectable()
 export class PostsService {
@@ -81,8 +81,51 @@ export class PostsService {
     };
   }
 
-  async paginate(options: IPaginationOptions): Promise<Pagination<Post>> {
-    return paginate<Post>(this.postRepository, options);
+  async findAllPaginated(
+    pageOptions: IPaginationOptions,
+    tag: string,
+    searchText: string,
+    userId?: string,
+  ) {
+    const wheres: FindOptionsWhere<Post>[] = [];
+
+    if (searchText) {
+      wheres.push({ title: Like(`%${searchText}%`) });
+      wheres.push({ content: Like(`%${searchText}%`) });
+    }
+
+    if (tag) {
+      if (wheres.length > 0) {
+        wheres.forEach((where) => {
+          where.tag = tag;
+        });
+      } else {
+        wheres.push({ tag });
+      }
+    }
+
+    if (userId) {
+      if (wheres.length > 0) {
+        wheres.forEach((where) => {
+          where.userId = userId;
+        });
+      } else {
+        wheres.push({ userId });
+      }
+    }
+
+    return this.paginate(pageOptions, {
+      where: wheres,
+      order: { createdAt: 'DESC' },
+      relations: ['user', 'comments'],
+    });
+  }
+
+  private async paginate(
+    pageOptions: IPaginationOptions,
+    findOptions?: FindManyOptions<Post>,
+  ): Promise<Pagination<Post>> {
+    return paginate<Post>(this.postRepository, pageOptions, findOptions);
   }
 
   async update(id: number, updatePostDto: UpdatePostDto) {

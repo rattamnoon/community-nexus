@@ -22,10 +22,8 @@ interface CardProps {
   onEditPost?: (post: Post) => void;
 }
 
-const Card = ({
+export const PostCard = ({
   post,
-  onLike,
-  onUnlike,
   firstIndex,
   lastIndex,
   isOurPost,
@@ -129,7 +127,7 @@ export const PostsList = ({
   return (
     <Flex vertical gap={1}>
       {posts.map((post, index) => (
-        <Card
+        <PostCard
           key={post.id}
           post={post}
           isLiked={likedPosts.includes(post.id)}

@@ -39,8 +39,12 @@ export class PostsController {
 
   @Public()
   @Get('/paginate')
-  async paginate(@Query() options: IPaginationOptions) {
-    return this.postsService.paginate(options);
+  async paginate(
+    @Query() options: IPaginationOptions,
+    @Query('tag') tag: string,
+    @Query('searchText') searchText: string,
+  ) {
+    return this.postsService.findAllPaginated(options, tag, searchText);
   }
 
   @Get('/our-posts')

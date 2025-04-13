@@ -1,5 +1,7 @@
+'use client';
+
 import withTheme from '@/theme';
-import { Layout } from 'antd';
+import { FloatButton, Layout } from 'antd';
 import { TopNavBar } from './TopNavBar';
 
 export const RootLayout = ({ children }: { children: React.ReactNode }) => {
@@ -7,6 +9,7 @@ export const RootLayout = ({ children }: { children: React.ReactNode }) => {
     <Layout className="min-h-screen" style={{ minHeight: '100vh' }}>
       <TopNavBar />
       {children}
+      <FloatButton.BackTop />
     </Layout>
   );
 };
