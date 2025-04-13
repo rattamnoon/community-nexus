@@ -30,14 +30,15 @@ const mutationFn = async (values: { username: string; password: string }) => {
 
 export const SignUpPage = () => {
   const [form] = Form.useForm();
+  const [messageApi, messageContextHolder] = message.useMessage();
   const router = useRouter();
   const { mutate: signUp, isPending } = useMutation({
     mutationFn,
     onError(error) {
-      message.error(error.message);
+      messageApi.error(error.message);
     },
     onSuccess() {
-      message.success('Sign up successful');
+      messageApi.success('Sign up successful');
       router.push(Routes.SignIn);
     },
   });
@@ -52,6 +53,7 @@ export const SignUpPage = () => {
 
   return (
     <Container>
+      {messageContextHolder}
       <CustomCard>
         <CustomTitle level={3}>Sign Up</CustomTitle>
         <Form

@@ -17,28 +17,22 @@ const handler = NextAuth({
           throw new Error('Please enter username and password');
         }
 
-        try {
-          const response = await axiosInstance.post('/auth/signin', {
-            username: credentials.username,
-            password: credentials.password,
-          });
+        const response = await axiosInstance.post('/auth/signin', {
+          username: credentials.username,
+          password: credentials.password,
+        });
 
-          if (response.status !== 200) {
-            throw new Error('Invalid username or password');
-          }
-
-          return {
-            accessToken: response.data.token,
-            refreshToken: response.data.refreshToken,
-            expiresIn: response.data.expiresIn,
-            id: response.data.user.id,
-            username: response.data.user.username,
-          };
-        } catch (error: any) {
-          throw new Error(
-            error?.response?.data?.message || 'An error occurred',
-          );
+        if (response.status !== 200) {
+          throw new Error('Invalid username or password');
         }
+
+        return {
+          accessToken: response.data.token,
+          refreshToken: response.data.refreshToken,
+          expiresIn: response.data.expiresIn,
+          id: response.data.user.id,
+          username: response.data.user.username,
+        };
       },
     }),
   ],

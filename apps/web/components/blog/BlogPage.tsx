@@ -38,7 +38,7 @@ const Blog = () => {
   const [openPostDialog, setOpenPostDialog] = useState(false);
   const { instance } = useAxios();
   const queryClient = useQueryClient();
-
+  const [messageApi, messageContextHolder] = message.useMessage();
   const { data, isLoading } = useQuery({
     queryKey: ['posts', tag, searchText],
     queryFn: () => fetchPosts(tag, searchText),
@@ -54,12 +54,15 @@ const Blog = () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
     onError: (error: any) => {
-      message.error(error?.response?.data?.message || 'Failed to create post');
+      messageApi.error(
+        error?.response?.data?.message || 'Failed to create post',
+      );
     },
   });
 
   return (
     <>
+      {messageContextHolder}
       <Row gutter={[16, 16]} justify="space-between">
         {isMobile || isTablet ? null : (
           <Col lg={4} md={6} xs={24}>

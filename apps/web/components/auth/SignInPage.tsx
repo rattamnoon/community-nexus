@@ -70,6 +70,7 @@ export const CustomLink = styled.a`
 
 export const SignInPage = () => {
   const [form] = Form.useForm<{ username: string; password: string }>();
+  const [messageApi, messageContextHolder] = message.useMessage();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
@@ -79,28 +80,25 @@ export const SignInPage = () => {
     username: string;
     password: string;
   }) => {
-    try {
-      setIsLoading(true);
-      const result = await signIn('credentials', {
-        username: values.username,
-        password: values.password,
-        redirect: false,
-      });
+    setIsLoading(true);
+    const result = await signIn('credentials', {
+      username: values.username,
+      password: values.password,
+      redirect: false,
+    });
 
-      if (result?.error) {
-        message.error(result.error);
-      } else {
-        router.push(callbackUrl);
-      }
-    } catch (error: any) {
-      message.error(error?.response?.data?.message || 'Failed to sign in');
-    } finally {
-      setIsLoading(false);
+    if (result?.error || !result?.ok) {
+      messageApi.error(result?.error || 'Failed to sign in');
+    } else {
+      router.push(callbackUrl);
     }
+
+    setIsLoading(false);
   };
 
   return (
     <Container>
+      {messageContextHolder}
       <CustomCard>
         <CustomTitle level={3}>Sign In</CustomTitle>
         <Form

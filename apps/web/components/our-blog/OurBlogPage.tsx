@@ -55,7 +55,7 @@ const OurBlog = () => {
   const [post, setPost] = useState<Post>();
   const [postTitle, setPostTitle] = useState<string>('');
   const { status } = useSession();
-
+  const [messageApi, messageContextHolder] = message.useMessage();
   const { data, isLoading } = useQuery({
     queryKey: ['posts', tag, searchText, 'our-blog'],
     queryFn: () => fetchPosts(instance, tag, searchText),
@@ -87,7 +87,9 @@ const OurBlog = () => {
       });
     },
     onError: (error: any) => {
-      message.error(error?.response?.data?.message || 'Failed to update post');
+      messageApi.error(
+        error?.response?.data?.message || 'Failed to update post',
+      );
     },
   });
 
@@ -108,6 +110,7 @@ const OurBlog = () => {
 
   return (
     <>
+      {messageContextHolder}
       {modalContextHolder}
       <Row gutter={[16, 16]} justify="space-between">
         {isMobile || isTablet ? null : (

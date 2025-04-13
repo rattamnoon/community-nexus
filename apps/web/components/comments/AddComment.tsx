@@ -105,7 +105,7 @@ export const AddComment = ({ postId }: { postId: number }) => {
   const [openModal, setOpenModal] = useState(false);
   const [form] = Form.useForm();
   const { status } = useSession();
-
+  const [messageApi, messageContextHolder] = message.useMessage();
   const isSmallScreen = isMobile || isTablet;
 
   const { mutate: createComment, isPending } = useMutation({
@@ -119,7 +119,7 @@ export const AddComment = ({ postId }: { postId: number }) => {
       queryClient.invalidateQueries({ queryKey: ['comments', postId] });
     },
     onError: (error: any) => {
-      message.error(
+      messageApi.error(
         error?.response?.data?.message || 'Failed to create comment',
       );
     },
@@ -148,6 +148,7 @@ export const AddComment = ({ postId }: { postId: number }) => {
 
   return (
     <>
+      {messageContextHolder}
       {modalContextHolder}
       {openModal && (
         <CommentModal
