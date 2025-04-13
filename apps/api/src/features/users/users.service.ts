@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '@repo/api/users/dto/create-user.dto';
 import { UpdateUserDto } from '@repo/api/users/dto/update-user.dto';
 import * as argon2 from 'argon2';
+import { join } from 'node:path';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -74,5 +75,24 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async upload(id: string, file: Express.Multer.File) {
+    const user = await this.usersRepository.findOneBy({ id });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    user.image = file.originalname;
+
+    await this.usersRepository.save(user);
+
+    return user;
+  }
+
+  async getImage(id: string): Promise<string> {
+    const user = await this.usersRepository.findOneBy({ id });
+    return join(__dirname, '..', '..', '..', 'uploads', user.image);
   }
 }
