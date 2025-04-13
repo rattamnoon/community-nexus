@@ -10,7 +10,7 @@ export default class UserSeeder implements Seeder {
     console.log(`-------- Start UserSeeder --------`);
 
     const admin = await dataSource.manager.findOneBy(User, {
-      username: 'admin.a',
+      username: 'admin',
     });
 
     if (!admin) {
