@@ -23,7 +23,7 @@ import { signOut, useSession } from 'next-auth/react';
 import { Castoro } from 'next/font/google';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useLocalStorage, useMediaQuery } from 'usehooks-ts';
 import { Menus } from './Menus';
 
@@ -115,7 +115,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-export const TopNavBar = () => {
+export const Bar = () => {
   const router = useRouter();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const isTablet = useMediaQuery('(max-width: 992px)');
@@ -181,5 +181,13 @@ export const TopNavBar = () => {
       )}
       <DrawerMenu open={open} onClose={() => setOpen(false)} />
     </Container>
+  );
+};
+
+export const TopNavBar = () => {
+  return (
+    <Suspense fallback={<Skeleton.Input active />}>
+      <Bar />
+    </Suspense>
   );
 };
