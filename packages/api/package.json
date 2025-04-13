@@ -34,7 +34,10 @@
     }
   },
   "dependencies": {
-    "@nestjs/mapped-types": "*"
+    "@nestjs/mapped-types": "*",
+    "class-validator": "*",
+    "class-transformer": "*",
+    "nestjs-typeorm-paginate": "*"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

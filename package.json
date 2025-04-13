@@ -1,4 +1,7 @@
 {
+  "dependencies": {
+    "@nestjs/mapped-types": "*"
+  },
   "name": "community-nexus",
   "version": "0.0.0",
   "private": true,
