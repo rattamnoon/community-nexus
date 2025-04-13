@@ -4,7 +4,7 @@ import { Menus } from '@/components/Menus';
 import { axiosInstance } from '@/utils/axiosInstance';
 import { Post } from '@repo/api/posts/entities/post.entity';
 import { useQuery } from '@tanstack/react-query';
-import { Col, Flex, Row, Skeleton } from 'antd';
+import { Col, Flex, Row } from 'antd';
 import { useParams } from 'next/navigation';
 import { useMediaQuery } from 'usehooks-ts';
 import { PostDetail } from '../posts/PostDetail';
@@ -40,9 +40,7 @@ export const BlogDetailPage = () => {
             minHeight: 'calc(100vh - 48px)',
           }}
         >
-          <Skeleton active loading={isLoading}>
-            <PostDetail post={data as Post} />
-          </Skeleton>
+          <PostDetail post={data as Post} isLoading={isLoading} />
         </Flex>
       </Col>
     </Row>
