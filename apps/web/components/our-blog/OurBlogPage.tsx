@@ -3,6 +3,7 @@
 import { Menus } from '@/components/Menus';
 import { Routes } from '@/constant/routes';
 import { useAxios } from '@/hooks/useAxios';
+import { CreatePostDto } from '@repo/api/posts/dto/create-post.dto';
 import { UpdatePostDto } from '@repo/api/posts/dto/update-post.dto';
 import { Post } from '@repo/api/posts/entities/post.entity';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -35,6 +36,12 @@ const updatePostFn = async (
   postId: number,
 ) => {
   const res = await instance.patch(`/posts/${postId}`, data);
+  const response = await res.data;
+  return response;
+};
+
+const createPostFn = async (instance: AxiosInstance, data: CreatePostDto) => {
+  const res = await instance.post('/posts', data);
   const response = await res.data;
   return response;
 };
@@ -89,6 +96,24 @@ const OurBlog = () => {
     onError: (error: any) => {
       messageApi.error(
         error?.response?.data?.message || 'Failed to update post',
+      );
+    },
+  });
+
+  const { mutate: createPost, isPending: isCreating } = useMutation({
+    mutationKey: ['createPost'],
+    mutationFn: (values: CreatePostDto) => {
+      return createPostFn(instance, values);
+    },
+    onSuccess: () => {
+      setOpenPostDialog(false);
+      queryClient.invalidateQueries({
+        queryKey: ['posts', tag, searchText, 'our-blog'],
+      });
+    },
+    onError: (error: any) => {
+      messageApi.error(
+        error?.response?.data?.message || 'Failed to create post',
       );
     },
   });
@@ -160,9 +185,13 @@ const OurBlog = () => {
         open={openPostDialog}
         post={post}
         onSubmit={(values) => {
-          updatePost(values);
+          if (postTitle === 'Create Post') {
+            createPost(values);
+          } else {
+            updatePost(values);
+          }
         }}
-        isPending={isUpdating}
+        isPending={isUpdating || isCreating}
         onCancel={() => {
           setOpenPostDialog(false);
         }}

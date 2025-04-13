@@ -51,7 +51,7 @@ const Blog = () => {
     },
     onSuccess: () => {
       setOpenPostDialog(false);
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      queryClient.invalidateQueries({ queryKey: ['posts', tag, searchText] });
     },
     onError: (error: any) => {
       messageApi.error(
