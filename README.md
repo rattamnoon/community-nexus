@@ -4,6 +4,10 @@
 
 ```bash
 docker compose up -d
+
+database: community-nexus
+user: root
+password: password
 ```
 
 ### 2. ขั้นการ Migrate ฐานข้อมูล
@@ -61,4 +65,5 @@ password: password
 - [JWT](https://jwt.io) - Authentication
 
 ### Unit Testing
+
 # community-nexus
