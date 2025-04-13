@@ -10,7 +10,7 @@ import { Col, Flex, message, Modal, Row, Skeleton } from 'antd';
 import { AxiosInstance } from 'axios';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 import { SearchBar } from '../common/SearchBar';
 import { PostDeleteDialog } from '../posts/PostDeleteDialog';
@@ -39,7 +39,7 @@ const updatePostFn = async (
   return response;
 };
 
-export const OurBlogPage = () => {
+const OurBlog = () => {
   const router = useRouter();
   const [modalApi, modalContextHolder] = Modal.useModal();
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -165,5 +165,13 @@ export const OurBlogPage = () => {
         }}
       />
     </>
+  );
+};
+
+export const OurBlogPage = () => {
+  return (
+    <Suspense fallback={<Skeleton active />}>
+      <OurBlog />
+    </Suspense>
   );
 };

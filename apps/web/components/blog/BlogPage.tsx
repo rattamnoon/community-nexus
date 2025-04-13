@@ -9,7 +9,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Col, Flex, message, Row, Skeleton } from 'antd';
 import { AxiosInstance } from 'axios';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 import { SearchBar } from '../common/SearchBar';
 import { PostDialog } from '../posts/PostDialog';
@@ -29,7 +29,7 @@ const createPostFn = async (instance: AxiosInstance, data: CreatePostDto) => {
   return response;
 };
 
-export const BlogPage = () => {
+const Blog = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const isTablet = useMediaQuery('(max-width: 992px)');
   const searchParams = useSearchParams();
@@ -88,5 +88,13 @@ export const BlogPage = () => {
         }}
       />
     </>
+  );
+};
+
+export const BlogPage = () => {
+  return (
+    <Suspense fallback={<Skeleton active />}>
+      <Blog />
+    </Suspense>
   );
 };

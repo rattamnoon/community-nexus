@@ -1,5 +1,1 @@
-import dynamic from 'next/dynamic';
-
-export default dynamic(() =>
-  import('@/components/our-blog/OurBlogPage').then((mod) => mod.OurBlogPage),
-);
+export { OurBlogPage as default } from '@/components/our-blog/OurBlogPage';

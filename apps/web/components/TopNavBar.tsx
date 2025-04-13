@@ -34,6 +34,15 @@ const castoro = Castoro({
   subsets: ['latin'],
 });
 
+const Container = styled.div`
+  display: flex;
+  width: 100%;
+  background-color: #243831;
+  padding: 16px;
+  height: 60px;
+  align-items: center;
+`;
+
 const Caption = styled.p`
   color: white;
   font-style: italic;
@@ -58,7 +67,7 @@ const MenuWithDropdown = ({
           <Text style={{ color: 'white' }}>{username}</Text>
           <Avatar
             src={`${mainUrl}/users/${userId}/avatar`}
-            style={{ width: 24, height: 24 }}
+            style={{ width: 40, height: 40 }}
           />
         </Button>
       </Dropdown>
@@ -105,15 +114,6 @@ const DrawerMenu = ({
     </Drawer>
   );
 };
-
-const Container = styled.div`
-  display: flex;
-  width: 100%;
-  background-color: #243831;
-  padding: 16px;
-  height: 48px;
-  align-items: center;
-`;
 
 export const Bar = () => {
   const router = useRouter();

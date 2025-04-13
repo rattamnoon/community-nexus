@@ -19,6 +19,8 @@
     "@emotion/styled": "^11.14.0",
     "@repo/ui": "workspace:*",
     "@tanstack/react-query": "^5.73.3",
+    "@tanstack/react-query-devtools": "^5.73.3",
+    "@tanstack/react-query-next-experimental": "^5.73.3",
     "antd": "^5.24.6",
     "axios": "^1.8.4",
     "dayjs": "^1.11.13",

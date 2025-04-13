@@ -7,25 +7,30 @@ export const useAxios = () => {
 
   const instance = useMemo(() => {
     return axios.create({
-      baseURL: `${process.env!.NEXT_PUBLIC_API_URL}`,
+      baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
     });
   }, []);
 
   useEffect(() => {
-    if (status === 'authenticated') {
-      instance.interceptors.request.use((config) => {
-        config.headers.Authorization = `Bearer ${session?.accessToken}`;
-        return config;
-      });
+    const interceptorId = instance.interceptors.request.use((config) => {
+      if (status === 'authenticated' && session?.accessToken) {
+        config.headers.Authorization = `Bearer ${session.accessToken}`;
+      }
+      return config;
+    });
 
-      instance.interceptors.response.use(
-        (response) => response,
-        (error) => {
-          return Promise.reject(error);
-        },
-      );
-    }
-  }, [status, session]);
+    const responseInterceptorId = instance.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        return Promise.reject(error);
+      },
+    );
+
+    return () => {
+      instance.interceptors.request.eject(interceptorId);
+      instance.interceptors.response.eject(responseInterceptorId);
+    };
+  }, [instance, status, session]);
 
   return { instance };
 };

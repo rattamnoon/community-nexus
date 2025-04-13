@@ -1,30 +1,20 @@
 'use client';
-import {
-  defaultShouldDehydrateQuery,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { getQueryClient } from '@/utils/get-query-client';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
 
 export const TanstackQueryWrapper = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 60 * 1000,
-      },
-      dehydrate: {
-        // include pending queries in dehydration
-        shouldDehydrateQuery: (query) =>
-          defaultShouldDehydrateQuery(query) ||
-          query.state.status === 'pending',
-      },
-    },
-  });
+  const queryClient = getQueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryStreamedHydration>{children}</ReactQueryStreamedHydration>
+      <ReactQueryDevtools />
+    </QueryClientProvider>
   );
 };
