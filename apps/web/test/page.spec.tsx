@@ -1,19 +1,21 @@
+import { afterAll, describe, expect, it, jest } from '@jest/globals';
 import { render } from '@testing-library/react';
-import { describe, it, expect, jest, afterAll } from '@jest/globals';
 
-import RootPage from '../app/page';
+import RootPage from '../app/(root)/page';
 
-window.fetch = jest.fn().mockImplementation(() =>
+type Fetch = typeof window.fetch;
+
+const mockFetch = jest.fn().mockImplementation(() =>
   Promise.resolve({
     ok: true,
     json: () => [],
-  })
+  }),
 );
 
+window.fetch = mockFetch as Fetch;
+
 describe('Root page', () => {
-  const { container, unmount } = render(
-    <RootPage params={{ forTest: true }} />
-  );
+  const { container, unmount } = render(<RootPage />);
 
   it('should match the snapshot', () => {
     expect(container).toMatchSnapshot();
