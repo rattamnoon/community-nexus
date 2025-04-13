@@ -3,10 +3,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'node:path';
 
+import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './features/users/users.module';
 import { AuthModule } from './features/auth/auth.module';
+import { GqlAuthGuard } from './features/auth/guard/gql-auth.guard';
+import { UsersModule } from './features/users/users.module';
+import { TagsModule } from './features/tags/tags.module';
+import { PostsModule } from './features/posts/posts.module';
+import { CommentsModule } from './features/comments/comments.module';
 
 @Module({
   imports: [
@@ -31,8 +36,17 @@ import { AuthModule } from './features/auth/auth.module';
     }),
     UsersModule,
     AuthModule,
+    TagsModule,
+    PostsModule,
+    CommentsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: GqlAuthGuard,
+    },
+  ],
 })
 export class AppModule {}
