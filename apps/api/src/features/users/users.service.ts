@@ -26,6 +26,10 @@ export class UsersService {
     return this.usersRepository.findOneBy({ id: id });
   }
 
+  async findOneByUsername(username: string): Promise<User> {
+    return this.usersRepository.findOneBy({ username });
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.usersRepository.findOneBy({ id });
     if (!user) {
@@ -54,5 +58,21 @@ export class UsersService {
     }
 
     return this.usersRepository.remove(user);
+  }
+
+  async validateUserSecurityCount(userId: string, securityCount: number) {
+    const user = await this.usersRepository.findOneBy({
+      id: userId,
+    });
+
+    if (!user) {
+      return;
+    }
+
+    if (user.securityCount !== securityCount) {
+      return;
+    }
+
+    return user;
   }
 }
