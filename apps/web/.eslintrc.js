@@ -4,8 +4,4 @@ module.exports = {
   parserOptions: {
     project: true,
   },
-  rules: {
-    '@typescript-eslint/no-explicit-any': 'off',
-    'turbo/no-undeclared-env-vars': 'off',
-  },
 };
